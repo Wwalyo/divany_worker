@@ -8,7 +8,9 @@ antiban(Telegram);
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
-bot.start((ctx) => ctx.reply('Да нихрена я не умею'));
+bot.command(['echo', 'echo@divany_worker_bot'], async (ctx) => {
+  const result = await ctx.reply("слышу");
+});
 
 
 
