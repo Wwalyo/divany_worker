@@ -1,22 +1,42 @@
-'use strict';
+import { Telegraf } from 'telegraf'
 
-const Telegraf = require('telegraf');
+const bot = new Telegraf(process.env.BOT_TOKEN)
 
+bot.command('quit', (ctx) => {
+  // Explicit usage
+  ctx.telegram.leaveChat(ctx.message.chat.id)
 
-const token = process.env.BOT_TOKEN;
-if (token === undefined) {
-  throw new Error('BOT_TOKEN must be provided!')
-}
+  // Using context shortcut
+  ctx.leaveChat()
+})
 
+bot.on('text', (ctx) => {
+  // Explicit usage
+  ctx.telegram.sendMessage(ctx.message.chat.id, `Hello ${ctx.state.role}`)
 
-const bot = new Telegraf(token);
+  // Using context shortcut
+  ctx.reply(`Hello ${ctx.state.role}`)
+})
 
-bot.on('text', (ctx) => ctx.reply('Да блядь'));
+bot.on('callback_query', (ctx) => {
+  // Explicit usage
+  ctx.telegram.answerCbQuery(ctx.callbackQuery.id)
 
+  // Using context shortcut
+  ctx.answerCbQuery()
+})
 
+bot.on('inline_query', (ctx) => {
+  const result = []
+  // Explicit usage
+  ctx.telegram.answerInlineQuery(ctx.inlineQuery.id, result)
 
-
-
+  // Using context shortcut
+  ctx.answerInlineQuery(result)
+})
 
 bot.launch()
 
+// Enable graceful stop
+process.once('SIGINT', () => bot.stop('SIGINT'))
+process.once('SIGTERM', () => bot.stop('SIGTERM'))
