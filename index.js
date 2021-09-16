@@ -1,21 +1,22 @@
 'use strict';
+
 const Telegraf = require('telegraf');
-const Telegram = require('telegraf/telegram');
-const antiban = require('./limit-compliance');
 
 
-antiban(Telegram);
-
-const bot = new Telegraf(process.env.BOT_TOKEN);
-
-bot.command(['echo', 'echo@divany_worker_bot'], async (ctx) => {
-  const result = await ctx.reply("слышу");
-});
+const token = process.env.BOT_TOKEN;
+if (token === undefined) {
+  throw new Error('BOT_TOKEN must be provided!')
+}
 
 
+const bot = new Telegraf(token);
 
+bot.on('text', (ctx) => ctx.reply('Да блядь'));
 
 
 
-bot.startPolling();
+
+
+
+bot.launch()
 
