@@ -1,6 +1,6 @@
-import { Telegraf } from 'telegraf'
+const Telegraf = require('telegraf');
 
-const bot = new Telegraf(process.env.BOT_TOKEN)
+const bot = new Telegraf(process.env.BOT_TOKEN);
 
 bot.command('quit', (ctx) => {
   // Explicit usage
